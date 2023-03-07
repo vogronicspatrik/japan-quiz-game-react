@@ -7,7 +7,7 @@ import { auth, Providers } from '../../config/firebase';
 import logging from '../../config/logging';
 import IPageProps from '../../interfaces/page';
 import firebase from 'firebase/compat/app';
-// import { SignInWithSocialMedia } from './modules';
+import { SignInWithSocialMedia } from './modules';
 import { createBrowserHistory } from 'history';
 
 const LoginPage: React.FunctionComponent<IPageProps> = props => {
@@ -35,22 +35,22 @@ const LoginPage: React.FunctionComponent<IPageProps> = props => {
         });
     }
 
-    // const signInWithSocialMedia = (provider: firebase.auth.AuthProvider) => {
-    //     if (error !== '') setError('');
+    const signInWithSocialMedia = (provider: firebase.auth.AuthProvider) => {
+        if (error !== '') setError('');
 
-    //     setAuthenticating(true);
+        setAuthenticating(true);
 
-    //     SignInWithSocialMedia(provider)
-    //     .then(result => {
-    //         logging.info(result);
-    //         history.push('/');
-    //     })
-    //     .catch(error => {
-    //         logging.error(error);
-    //         setAuthenticating(false);
-    //         setError(error.message);
-    //     });
-    // }
+        SignInWithSocialMedia(provider)
+        .then(result => {
+            logging.info(result);
+            history.push('/');
+        })
+        .catch(error => {
+            logging.error(error);
+            setAuthenticating(false);
+            setError(error.message);
+        });
+    }
 
     return (
         <AuthContainer header="Login">
@@ -89,14 +89,14 @@ const LoginPage: React.FunctionComponent<IPageProps> = props => {
             </small>
             <ErrorText error={error} />
             <hr className="bg-info m-3" />
-            {/* <Button
+            <Button
                 block
                 disabled={authenticating}
                 onClick={() => signInWithSocialMedia(Providers.google)}
                 style={{ backgroundColor:'#ea4335', borderColor: '#ea4335'}} 
             >
                 <i className="fab fa-google mr-2"></i> Sign in with Google
-            </Button> */}
+            </Button>
         </AuthContainer>
     );
 }
