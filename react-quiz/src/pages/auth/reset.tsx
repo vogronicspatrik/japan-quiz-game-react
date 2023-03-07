@@ -7,8 +7,7 @@ import { auth } from '../../config/firebase';
 import logging from '../../config/logging';
 import IPageProps from '../../interfaces/page';
 import queryString from 'querystring';
-import { createBrowserHistory } from 'history';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const ResetPasswordPage: React.FunctionComponent<IPageProps> = props => {
     const [verifying, setVerifying] = useState<boolean>(true);
@@ -19,7 +18,7 @@ const ResetPasswordPage: React.FunctionComponent<IPageProps> = props => {
     const [oobCode, setOobCode] = useState<string>('');
     const [error, setError] = useState<string>('');
 
-    const history = createBrowserHistory();
+    const navigate = useNavigate();
     const location = useLocation();
     useEffect(() => {
         logging.info('Extracting code');
@@ -79,7 +78,7 @@ const ResetPasswordPage: React.FunctionComponent<IPageProps> = props => {
 
         auth.confirmPasswordReset(oobCode, password)
         .then(() => {
-            history.push('/login');
+            navigate('/login');
         })
         .catch(error => {
             logging.error(error);

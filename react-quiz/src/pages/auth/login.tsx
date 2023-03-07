@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button, FormGroup, Input } from 'reactstrap';
 import AuthContainer from '../../components/AuthContainer';
 import ErrorText from '../../components/ErrorText';
@@ -8,7 +8,6 @@ import logging from '../../config/logging';
 import IPageProps from '../../interfaces/page';
 import firebase from 'firebase/compat/app';
 import { SignInWithSocialMedia } from './modules';
-import { createBrowserHistory } from 'history';
 
 const LoginPage: React.FunctionComponent<IPageProps> = props => {
     const [authenticating, setAuthenticating] = useState<boolean>(false);
@@ -16,7 +15,7 @@ const LoginPage: React.FunctionComponent<IPageProps> = props => {
     const [password, setPassword] = useState<string>('');
     const [error, setError] = useState<string>('');
 
-    const history = createBrowserHistory();
+    const navigate = useNavigate();
 
     const signInWithEmailAndPassword = () => {
         if (error !== '') setError('');
@@ -26,7 +25,7 @@ const LoginPage: React.FunctionComponent<IPageProps> = props => {
         auth.signInWithEmailAndPassword(email, password)
         .then(result => {
             logging.info(result);
-            history.push('/');
+            navigate('/');
         })
         .catch(error => {
             logging.error(error);
@@ -43,7 +42,7 @@ const LoginPage: React.FunctionComponent<IPageProps> = props => {
         SignInWithSocialMedia(provider)
         .then(result => {
             logging.info(result);
-            history.push('/');
+            navigate('/');
         })
         .catch(error => {
             logging.error(error);

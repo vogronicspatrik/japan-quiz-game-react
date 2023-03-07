@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { Button, FormGroup, Input } from 'reactstrap';
 import AuthContainer from '../../components/AuthContainer';
 import ErrorText from '../../components/ErrorText';
 import { auth } from '../../config/firebase';
 import logging from '../../config/logging';
 import IPageProps from '../../interfaces/page';
-import { createBrowserHistory } from 'history';
+
 
 const ChangePasswordPage: React.FunctionComponent<IPageProps> = props => {
     const [changing, setChanging] = useState<boolean>(false);
@@ -15,7 +15,7 @@ const ChangePasswordPage: React.FunctionComponent<IPageProps> = props => {
     const [confirm, setConfirm] = useState<string>('');
     const [error, setError] = useState<string>('');
 
-    const history = createBrowserHistory();
+    const navigate = useNavigate();
 
     const passwordChangeRequest = () => {
         if (password !== confirm)
@@ -31,7 +31,7 @@ const ChangePasswordPage: React.FunctionComponent<IPageProps> = props => {
         auth.currentUser?.updatePassword(password)
         .then(() => {
             logging.info('Password change successful.');
-            history.push('/');
+            navigate('/');
         })
         .catch(error => {
             logging.error(error);

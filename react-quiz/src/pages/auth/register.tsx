@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import IPageProps from '../../interfaces/page';
 import { Link } from 'react-router-dom';
-import { createBrowserHistory } from 'history';
+import {  useNavigate } from 'react-router-dom';
 import { auth } from '../../config/firebase';
 import logging from '../../config/logging';
 
@@ -17,7 +17,7 @@ const RegisterPage: React.FunctionComponent<IPageProps> = props => {
     const [confirm, setConfirm] = useState<string>('');
     const [error, setError] = useState<string>('');
 
-    const history = createBrowserHistory();
+    const navigate = useNavigate();
 
     const signUpWithEmailAndPassword = () => {
         if (password !== confirm)
@@ -33,7 +33,7 @@ const RegisterPage: React.FunctionComponent<IPageProps> = props => {
         auth.createUserWithEmailAndPassword(email, password)
         .then(result => {
             logging.info(result);
-            history.push('/login');
+            navigate('/login');
         })
         .catch(error => {
             logging.error(error);
