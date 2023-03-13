@@ -22,5 +22,5 @@
   },
   "include": [
     "src"
-  ]
+, "src/serviceWorkerRegistration.js", "public/service.worker.js"  ]
 }
