@@ -9,7 +9,7 @@
       "purpose:": "any maskable"
     },
     {
-      "src": "images/background.jpg",
+      "src": "background.jpg",
       "type": "image/png",
       "sizes": "512x512",
       "purpose:": "any maskable"
