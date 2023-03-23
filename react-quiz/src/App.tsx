@@ -5,11 +5,15 @@ import { Route, Routes } from 'react-router-dom';
 import AuthRoute from './components/AuthRoute';
 import routes from './config/routes';
 import { Spinner } from 'reactstrap';
+import Header from "./components/Header";
+
+
 
 export interface IApplicationProps { }
 
 const App: React.FunctionComponent<IApplicationProps> = props => {
     const [loading, setLoading] = useState<boolean>(true);
+
 
     useEffect(() => {
         auth.onAuthStateChanged(user => {
@@ -30,6 +34,7 @@ const App: React.FunctionComponent<IApplicationProps> = props => {
         return <Spinner color="info" />
     return (
         <div>
+            <Header />
             <Routes>
                 {routes.map((route, index) => 
                     <Route

@@ -16,7 +16,7 @@ const routes: IRoute[] = [
         exact: true,
         component: HomePage,
         name: 'Home Page',
-        protected: true
+        protected: false
     },
     {
         path: '/quiz',
