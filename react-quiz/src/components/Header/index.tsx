@@ -47,7 +47,7 @@ const Header = () => {
         <Toolbar>
           {isMatch ? (
             <>
-              <Typography sx={{ fontSize: "2rem", paddingLeft: "10%" }}>
+              <Typography sx={{ fontSize: "2rem", paddingLeft: "10%"}}>
                 Gorin
               </Typography>
               <DrawerComp />
@@ -73,7 +73,8 @@ const Header = () => {
                 {user?.isLoggedIn === true? 
                     <Button sx={{ marginLeft: "auto" }} variant="contained">
                         <Link color="white" to="/logout">Logout</Link>
-                    </Button> : 
+                    </Button>
+                     : 
                     <div>
                     <Button sx={{ marginLeft: "auto" }} variant="contained">
                     <Link color="white" to="/login">Login</Link>

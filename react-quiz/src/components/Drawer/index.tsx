@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Drawer,
   IconButton,
@@ -8,11 +8,13 @@ import {
   ListItemText,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import { UserContext } from "../../UserContext";
+import { Link } from 'react-router-dom';
 
-//import MenuIcon from '@mui/material/MenuIcon';
-const pages = ["Quiz", "Score"];
+
 const DrawerComp = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
+  const user = useContext(UserContext);
 
   return (
     <React.Fragment>
@@ -21,15 +23,31 @@ const DrawerComp = () => {
         open={openDrawer}
         onClose={() => setOpenDrawer(false)}
       >
+        {user?.isLoggedIn === true ? 
         <List>
-          {pages.map((page, index) => (
-            <ListItemButton key={index}>
-              <ListItemIcon>
-                <ListItemText>{page}</ListItemText>
-              </ListItemIcon>
+            <ListItemButton>
+                <ListItemText>Profile</ListItemText>
             </ListItemButton>
-          ))}
-        </List>
+            <ListItemButton>
+                <ListItemText>Quiz</ListItemText>
+            </ListItemButton>
+            <ListItemButton>
+                <ListItemText>Score</ListItemText>
+            </ListItemButton>
+            <ListItemButton>
+                <ListItemText>Logout</ListItemText>
+            </ListItemButton>
+            </List>
+                :
+            <List>
+              <ListItemButton component={Link} to="/login">
+                  <ListItemText>Login</ListItemText>
+              </ListItemButton>
+              <ListItemButton component={Link} to="/quiz">
+                  <ListItemText>Register</ListItemText>
+              </ListItemButton>
+            </List>
+          }
       </Drawer>
       <IconButton
         sx={{ color: "white", marginLeft: "auto" }}

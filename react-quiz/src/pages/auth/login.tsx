@@ -15,6 +15,7 @@ import { UserContext } from "../../UserContext";
 import {Button, FormGroup, Input} from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
+import UserService from '../../services/user-service';
 
   const useStyles = makeStyles((theme: any) => ({
     root: {
@@ -31,6 +32,12 @@ import { makeStyles } from '@mui/styles';
       margin: theme.spacing(2, 0),
     },
   }));
+
+  interface UserProfile{
+    family_name: string;
+    given_name: string;
+    email: string;
+  }
     
 const LoginPage: React.FunctionComponent<IPageProps> = props => {
     const {t} = useTranslation(["login"]);
@@ -42,6 +49,8 @@ const LoginPage: React.FunctionComponent<IPageProps> = props => {
 
     const classes = useStyles();
     const navigate = useNavigate();
+
+    const userService = new UserService();
 
     const signInWithEmailAndPassword = () => {
         if (error !== '') setError('');
@@ -71,7 +80,16 @@ const LoginPage: React.FunctionComponent<IPageProps> = props => {
         SignInWithSocialMedia(provider)
         .then(result => {
             logging.info(result);
-            navigate('/quiz');
+            console.log("innen jon a result");
+            console.log(result);
+            const profile = result.additionalUserInfo?.profile as UserProfile;
+            console.log(profile.email, profile.given_name, profile.family_name);
+            if(result.additionalUserInfo?.isNewUser == true){
+                userService.createUser(profile.email, profile.given_name, profile.family_name);
+            }
+            console.log("eddig");
+            
+            navigate('/');
         })
         .catch(error => {
             logging.error(error);
@@ -79,10 +97,6 @@ const LoginPage: React.FunctionComponent<IPageProps> = props => {
             setIsLoggedIn(false);
             setError(error.message);
         });
-    }
-
-    const onChange = (event: any) =>{
-        i18n.changeLanguage(event.target.value);
     }
 
     return (

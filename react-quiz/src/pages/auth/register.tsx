@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import IPageProps from '../../interfaces/page';
 import { Link } from 'react-router-dom';
 import {  useNavigate } from 'react-router-dom';
-import { auth } from '../../config/firebase';
+import { auth, db } from '../../config/firebase';
 import logging from '../../config/logging';
 
 import { Button, FormGroup, Input } from 'reactstrap';
@@ -53,6 +53,8 @@ const RegisterPage: React.FunctionComponent<IPageProps> = props => {
 
             setRegistering(false);
         });
+
+        
     }
 
     return (
