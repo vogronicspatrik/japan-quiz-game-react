@@ -48,7 +48,7 @@ const Header = () => {
         <Toolbar>
           {isMatch ? (
             <>
-              <Typography sx={{ fontSize: "2rem", paddingLeft: "10%"}}>
+              <Typography sx={{ fontSize: "2rem", paddingLeft: "auto", color:"white"}}>
                 Gorin
               </Typography>
               <DrawerComp />
