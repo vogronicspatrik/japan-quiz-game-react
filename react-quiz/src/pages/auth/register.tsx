@@ -6,12 +6,10 @@ import { auth } from '../../config/firebase';
 import logging from '../../config/logging';
 import { useTranslation } from 'react-i18next';
 import {Button, FormGroup, Input, Typography, Container, TextField} from '@mui/material';
-import { makeStyles } from '@mui/styles';
 
-
-// import { Button, FormGroup, Input } from 'reactstrap';
 import AuthContainer from '../../components/AuthContainer';
 import ErrorText from '../../components/ErrorText';
+import UserService from '../../services/user-service';
 
 const RegisterPage: React.FunctionComponent<IPageProps> = props => {
     const {t} = useTranslation(["register"]);
@@ -24,6 +22,7 @@ const RegisterPage: React.FunctionComponent<IPageProps> = props => {
     const [error, setError] = useState<string>('');
 
     const navigate = useNavigate();
+    const userService = new UserService();
 
     const signUpWithEmailAndPassword = () => {
         if (password !== confirm)
@@ -40,7 +39,8 @@ const RegisterPage: React.FunctionComponent<IPageProps> = props => {
         auth.createUserWithEmailAndPassword(email, password)
         .then(result => {
             logging.info(result);
-            navigate('/login');
+            userService.createUser(email, firstName, lastName);
+            navigate('/');
         })
         .catch(error => {
             logging.error(error);
