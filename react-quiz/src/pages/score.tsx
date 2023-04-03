@@ -1,8 +1,9 @@
 import { makeStyles } from '@mui/styles';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
-
+import { useTranslation } from 'react-i18next';
 import UserService from '../services/user-service';
 import { useEffect, useState } from 'react';
+
 const useStyles = makeStyles({
     table: {
       minWidth: 200,
@@ -20,7 +21,7 @@ interface User {
 
 const Score = () => {
   const classes = useStyles();
-
+  const {t} = useTranslation(["pages"]);
   const userService = new UserService();
   const [users, setUsers] = useState<User[]>([]);
 
@@ -39,8 +40,8 @@ const Score = () => {
       <Table className={classes.table} aria-label="user scores">
         <TableHead>
           <TableRow>
-            <TableCell>User</TableCell>
-            <TableCell align="right">Score</TableCell>
+            <TableCell>{t('user')}</TableCell>
+            <TableCell align="right">{t('score')}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
