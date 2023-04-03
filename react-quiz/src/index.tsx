@@ -4,8 +4,6 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
-import i18next from 'i18next'
-import { initReactI18next } from 'react-i18next'
 import Context from './UserContext';
 import { CssBaseline, createTheme, ThemeProvider } from '@mui/material';
 import "./i18n";

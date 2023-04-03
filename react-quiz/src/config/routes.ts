@@ -8,6 +8,7 @@ import LoginPage from "../pages/auth/login";
 import HomePage from "../pages/home";
 import LogoutPage from "../pages/auth/logout";
 import ResetPasswordPage from "../pages/auth/reset";
+import Score from "../pages/score";
 // import HomePage from "../pages/home";
 
 const routes: IRoute[] = [
@@ -66,6 +67,13 @@ const routes: IRoute[] = [
         component: ResetPasswordPage,
         name: 'Reset Password Page',
         protected: false
+    },
+    {
+        path: '/score',
+        exact: true,
+        component: Score,
+        name: 'Score',
+        protected: true
     }
 ];
 

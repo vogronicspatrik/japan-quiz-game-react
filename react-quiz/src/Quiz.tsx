@@ -7,10 +7,10 @@ import { QuestionState } from './SampleData';
 
 
 import QuestionService from './services/question-service';
-
+import UserService from './services/user-service';
 import { makeStyles } from '@mui/styles';
 import { Typography, Button, createTheme, ThemeProvider, Container, MenuItem, Select } from '@mui/material';
-import BGImage from './background.jpg';
+import BGImage from './gorin.jpg';
 
 
 const theme = createTheme({
@@ -82,14 +82,14 @@ const QuizPage = () => {
 
   const [loading, setLoading] = useState(false);
   const[questions, setQuestions] = useState<QuestionState[]>([]);
-  const[number, setNumber] = useState(0);
+  const[number, setNumber] = useState(1);
   const[userAnswers, setUserAnswers] = useState<AnswerObject[]>([]);
   const[score, setScore] = useState(0);
   const[gameOver, setGameOver] = useState(true);
   const[difficulty, setDifficulty] = useState("easy");
-
+  const[isLastQ, setIsLastQ] = useState(false);
   const questionService = new QuestionService();
-
+  const userService = new UserService();
   const classes = useStyles();
 
   const startQuiz = async () =>{
@@ -103,6 +103,7 @@ const QuizPage = () => {
       setScore(0);
       setUserAnswers([]);
       setNumber(0);
+      setIsLastQ(false);
       setLoading(false);
   }
 
@@ -123,6 +124,9 @@ const QuizPage = () => {
         correctAnswer: questions[number].correct_answer,
       };
       setUserAnswers(prev => [...prev, answerObject]);
+      if(number === TOTAL_QUESTION-1){
+        setIsLastQ(true);
+      }
     }
 
   }
@@ -130,8 +134,12 @@ const QuizPage = () => {
   const nextQuestion = () => {
     //move on to the next if not the last one
     const nextQuestion = number + 1;
+    console.log(nextQuestion+ "?=" +  TOTAL_QUESTION)
 
     if(nextQuestion === TOTAL_QUESTION){
+      //console.log(score);
+      userService.setPointsAndDailyQuizDone(score);
+      console.log("game vege? :" + gameOver)
       setGameOver(true);
     }
     else{
@@ -139,10 +147,8 @@ const QuizPage = () => {
     }
   }
 
-  const handleLanguageChange = (e: any) => {
+  const handleDiffChange = (e: any) => {
     setDifficulty(e.target.value);
-    console.log(e.target.value);
-    // i18n.changeLanguage(e.target.value);
 };
 
 
@@ -152,13 +158,14 @@ const QuizPage = () => {
     <Typography variant="h1" className={classes.heading}>
       QUIZ
     </Typography>
-    {gameOver || userAnswers.length === TOTAL_QUESTION ? (
+    {/* || userAnswers.length === TOTAL_QUESTION */}
+    {gameOver ? (
       <Container sx={{display:"flex",flexDirection:"column", maxWidth:"200px", textAlign:"center", width:"300px"}}>
         <Select
           labelId="diff-select-label"
           id="diff-select"
           value={difficulty}
-          onChange={handleLanguageChange}
+          onChange={handleDiffChange}
           sx={{ backgroundColor: "#333", color: "#fff", marginRight: 2, width:"200px" }}
           >
           <MenuItem value="easy">Könnyű</MenuItem>
@@ -186,9 +193,14 @@ const QuizPage = () => {
       />
     )}
 
-    {!gameOver && !loading && userAnswers.length === number + 1 && number !== TOTAL_QUESTION - 1 ? (
+    {!gameOver && !loading && userAnswers.length === number + 1 && number !== TOTAL_QUESTION && !isLastQ? (
       <Button variant="contained" color="primary" className={classes.button} onClick={nextQuestion}>
         Next Question
+      </Button>
+    ) : null}
+        {!gameOver && !loading && userAnswers.length === number + 1 && number !== TOTAL_QUESTION && isLastQ ? (
+      <Button variant="contained" color="primary" className={classes.button} onClick={nextQuestion}>
+        End Quiz
       </Button>
     ) : null}
   </div>

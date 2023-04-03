@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { auth } from './config/firebase';
 import logging from './config/logging';
 import { Route, Routes } from 'react-router-dom';
@@ -6,6 +6,7 @@ import AuthRoute from './components/AuthRoute';
 import routes from './config/routes';
 import { Spinner } from 'reactstrap';
 import Header from "./components/Header";
+import { UserContext } from "./UserContext";
 
 
 
@@ -13,16 +14,18 @@ export interface IApplicationProps { }
 
 const App: React.FunctionComponent<IApplicationProps> = props => {
     const [loading, setLoading] = useState<boolean>(true);
-
+    const {  setIsLoggedIn } = useContext(UserContext);
 
     useEffect(() => {
         auth.onAuthStateChanged(user => {
             if (user)
             {
+                setIsLoggedIn(true);
                 logging.info('User detected.');
             }
             else
             {
+                setIsLoggedIn(false);
                 logging.info('No user detected');
             }
 
