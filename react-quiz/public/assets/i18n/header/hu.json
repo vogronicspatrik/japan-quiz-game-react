@@ -1,0 +1,8 @@
+{
+	"login": "Belépés",
+    "logout": "Kilépés",
+    "register": "Regisztráció",
+    "quiz": "Kvíz",
+    "score": "Pontok",
+    "home": "Kezdőlap"
+}

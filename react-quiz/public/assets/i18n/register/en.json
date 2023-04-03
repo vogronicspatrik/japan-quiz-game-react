@@ -1,0 +1,16 @@
+{
+	"notMachedPw": "Please make sure your passwords match.",
+    "strongerPw": "Please enter a stronger password.",
+    "usedEmail": "Email already in use.",
+    "invalidEmail": "Invalid email",
+    "unableToRegister": "Unable to register.  Please try again later.",
+    "login": "Login",
+    "alreadyReg": "Already have an account?",
+    "firstName": "Firstname",
+    "lastName": "Lastname",
+    "email": "Email address",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "signUp": "Sign Up",
+    "register": "Registration"
+}

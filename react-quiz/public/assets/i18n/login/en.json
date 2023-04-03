@@ -1,5 +1,9 @@
 {
 	"missingAccount": "Don't have an account?",
     "registerHere": "Register here.",
-    "forgotPw": "Forget your password?"
+    "forgotPw": "Forget your password?",
+    "login": "Login",
+    "emailAddress": "Email Address",
+    "password": "Password",
+    "google": "Sign in with Google"
 }

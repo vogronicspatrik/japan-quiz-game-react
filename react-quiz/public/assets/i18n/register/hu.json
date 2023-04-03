@@ -1,0 +1,16 @@
+{
+	"notMachedPw": "A jelszavak nem egyezenek meg",
+    "strongerPw": "Erősebb jelsző szükséges",
+    "usedEmail": "Ez az emailcím már regisztrálva van",
+    "invalidEmail": "Nem megfelelő az email cím",
+    "unableToRegister": "Valami hiba történt. Ellenőrizd az adatokat és próbálad újra",
+    "login": "Belépés",
+    "alreadyReg": "Már regisztráltál?",
+    "firstName": "Keresztnév",
+    "lastName": "Vezetéknév",
+    "email": "Email cím",
+    "password": "Jelszó",
+    "confirmPassword": "Jelszó újra",
+    "signUp": "Regisztrálj",
+    "register": "Regisztráció"
+}

@@ -12,7 +12,6 @@ import {
   MenuItem
 } from "@mui/material";
 import DrawerComp from "../Drawer"
-
 import { Link } from 'react-router-dom';
 import { UserContext } from "../../UserContext";
 
@@ -20,13 +19,11 @@ import i18next from "i18next";
 import { useTranslation } from "react-i18next";
 
 const Header = () => {
-  const [value, setValue] = useState();
+  const [value, setValue] = useState("/");
   const theme = useTheme();
-//   console.log(theme);
   const isMatch = useMediaQuery(theme.breakpoints.down("md"));
-//   console.log(isMatch);
 
-    const { i18n, t } = useTranslation(["common"]);
+    const { i18n, t } = useTranslation(["header"]);
     const lng = localStorage.getItem("i18nextLng");
     useEffect(() => {
         if (lng && lng.length> 2) {
@@ -34,9 +31,13 @@ const Header = () => {
         }
     }, []);
 
-        const handleLanguageChange = (e: any) => {
-            i18n.changeLanguage(e.target.value);
-        };
+    const handleLanguageChange = (e: any) => {
+        i18n.changeLanguage(e.target.value);
+    };
+
+    const handleChange = (event: any, newValue: any) => {
+      setValue(newValue);
+    };
 
   //for handling user
   const user = useContext(UserContext);
@@ -54,33 +55,32 @@ const Header = () => {
             </>
           ) : (
             <>
-            {user?.isLoggedIn === true ? 
+            {user.isLoggedIn === true ? 
               <Tabs
                 sx={{ marginLeft: "auto" }}
                 indicatorColor="secondary"
                 textColor="inherit"
                 value={value}
-                onChange={(e, value) => setValue(value)}
+                onChange={handleChange}
               >
-
-                <Tab label="Quiz" />
-                <Tab label="Score" />
-                
+                <Tab label={t("home")} value="/" component={Link} to={"/"} />
+                <Tab label={t("quiz")} value="/quiz" component={Link} to={"/quiz"}/>
+                <Tab label={t("score")} value="/score" component={Link} to={"/score"}/>
               </Tabs>
-              :null
-            }
+               :null
+             }
 
-                {user?.isLoggedIn === true? 
+                {user.isLoggedIn === true? 
                     <Button sx={{ marginLeft: "auto" }} variant="contained">
-                        <Link color="white" to="/logout">Logout</Link>
+                        <Link color="white" to="/logout">{t("logout")}</Link>
                     </Button>
                      : 
                     <div>
                     <Button sx={{ marginLeft: "auto" }} variant="contained">
-                    <Link color="white" to="/login">Login</Link>
+                    <Link color="white" to="/login">{t("login")}</Link>
                     </Button>
                     <Button sx={{ marginLeft: "10px" }} variant="contained">
-                    <Link to="/register">Register</Link>
+                    <Link to="/register">{t("register")}</Link>
                     </Button>
                     </div>
                  }

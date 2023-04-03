@@ -10,7 +10,7 @@ import firebase from 'firebase/compat/app';
 import { SignInWithSocialMedia } from './modules';
 import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
-import { UserContext } from "../../UserContext";
+// import { UserContext } from "../../UserContext";
 
 import {Button, FormGroup, Input} from '@mui/material';
 import { makeStyles } from '@mui/styles';
@@ -45,7 +45,7 @@ const LoginPage: React.FunctionComponent<IPageProps> = props => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [error, setError] = useState<string>('');
-    const {  setIsLoggedIn } = useContext(UserContext);
+    // const {  setIsLoggedIn } = useContext(UserContext);
 
     const classes = useStyles();
     const navigate = useNavigate();
@@ -56,7 +56,7 @@ const LoginPage: React.FunctionComponent<IPageProps> = props => {
         if (error !== '') setError('');
 
         setAuthenticating(true);
-        setIsLoggedIn(true);
+        //setIsLoggedIn(true);
 
         auth.signInWithEmailAndPassword(email, password)
         .then(result => {
@@ -66,7 +66,7 @@ const LoginPage: React.FunctionComponent<IPageProps> = props => {
         .catch(error => {
             logging.error(error);
             setAuthenticating(false);
-            setIsLoggedIn(false);
+            //setIsLoggedIn(false);
             setError(error.message);
         });
     }
@@ -75,39 +75,32 @@ const LoginPage: React.FunctionComponent<IPageProps> = props => {
         if (error !== '') setError('');
 
         setAuthenticating(true);
-        setIsLoggedIn(true);
 
         SignInWithSocialMedia(provider)
         .then(result => {
             logging.info(result);
-            console.log("innen jon a result");
-            console.log(result);
             const profile = result.additionalUserInfo?.profile as UserProfile;
-            console.log(profile.email, profile.given_name, profile.family_name);
             if(result.additionalUserInfo?.isNewUser == true){
                 userService.createUser(profile.email, profile.given_name, profile.family_name);
-            }
-            console.log("eddig");
-            
+            }     
             navigate('/');
         })
         .catch(error => {
             logging.error(error);
             setAuthenticating(false);
-            setIsLoggedIn(false);
             setError(error.message);
         });
     }
 
     return (
         <Suspense fallback="Loading...">
-            <AuthContainer header="Login">
+            <AuthContainer header={t('login')}>
                 <FormGroup>
                     <Input 
                         type="email"
                         name="email"
                         id="email"
-                        placeholder="Email Address"
+                        placeholder={t("emailAddress") as string}
                         onChange={event => setEmail(event.target.value)}
                         value={email}
                     />
@@ -118,7 +111,7 @@ const LoginPage: React.FunctionComponent<IPageProps> = props => {
                         type="password"
                         name="password"
                         id="password"
-                        placeholder="Enter Password"
+                        placeholder={t("password") as string}
                         onChange={event => setPassword(event.target.value)}
                         value={password}
                     />
@@ -131,14 +124,14 @@ const LoginPage: React.FunctionComponent<IPageProps> = props => {
                     disabled={authenticating}
                     onClick={() => signInWithEmailAndPassword()}
                 >
-                Login
+                {t('login')}
                 </Button>
                 <small>
                     <p className='m-1 text-center'>{t("missingAccount")} <Link to="/register">{t("registerHere")}</Link></p>
                     <p className='m-1 text-center'><Link to="/forget">{t("forgotPw")}</Link></p>
                 </small>
                 <ErrorText error={error} />
-                <hr className="bg-info m-3" />
+                {/* <hr className="bg-info m-3" /> */}
                 <Button
                     fullWidth
                     variant="contained"
@@ -147,7 +140,7 @@ const LoginPage: React.FunctionComponent<IPageProps> = props => {
                     onClick={() => signInWithSocialMedia(Providers.google)}
                     disabled={authenticating}
                 >
-                    <i className="fab fa-google mr-2"></i> Sign in with Google
+                    <i className="fab fa-google mr-2"></i> {t('google')}
                 </Button>
             </AuthContainer>
         </Suspense>
