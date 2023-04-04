@@ -4,9 +4,7 @@ import {
   IconButton,
   List,
   ListItemButton,
-  ListItemIcon,
   ListItemText,
-  Select,
   MenuItem,
   Menu
 } from "@mui/material";
@@ -25,11 +23,11 @@ const DrawerComp = () => {
   const lng = localStorage.getItem("i18nextLng");
 
   useEffect(() => {
-    if (lng && lng.length> 2) {
-    i18next.changeLanguage("en");
+    if (lng && lng.length > 2) {
+      i18next.changeLanguage("en");
     }
-}, []);
-  const handleClick = (event:any) => {
+  }, []);
+  const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -37,67 +35,66 @@ const DrawerComp = () => {
     setAnchorEl(null);
   };
 
-  const handleLanguageChange = (e:any) => {
+  const handleLanguageChange = (e: any) => {
     i18n.changeLanguage(e.target.getAttribute("value"));
     handleClose();
   };
 
   return (
     <React.Fragment>
-<div style={{ display: "flex", marginLeft: "auto"}}>
-      <IconButton
-        sx={{ color: "white"}}
-        onClick={handleClick}
-      >
-        <LanguageIcon />
-      </IconButton>
-      <Menu
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-        //onChange={handleLanguageChange}
-      >
-        <MenuItem value="en" onClick={handleLanguageChange}>English</MenuItem>
-        <MenuItem value="hu" onClick={handleLanguageChange}>Magyar</MenuItem>
-      </Menu>
+      <div style={{ display: "flex", marginLeft: "auto" }}>
+        <IconButton
+          sx={{ color: "white" }}
+          onClick={handleClick}
+        >
+          <LanguageIcon />
+        </IconButton>
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        >
+          <MenuItem value="en" onClick={handleLanguageChange}>English</MenuItem>
+          <MenuItem value="hu" onClick={handleLanguageChange}>Magyar</MenuItem>
+        </Menu>
 
-      <Drawer
-        anchor="left"
-        open={openDrawer}
-        onClose={() => setOpenDrawer(false)}
-      >
-        {user?.isLoggedIn === true ? 
-        <List>
-            {/* <ListItemButton>
+        <Drawer
+          anchor="left"
+          open={openDrawer}
+          onClose={() => setOpenDrawer(false)}
+        >
+          {user?.isLoggedIn === true ?
+            <List>
+              {/* <ListItemButton>
                 <ListItemText>{t("profile")}</ListItemText>
             </ListItemButton> */}
-            <ListItemButton component={Link} to="/quiz">
+              <ListItemButton component={Link} to="/quiz">
                 <ListItemText>{t("quiz")}</ListItemText>
-            </ListItemButton>
-            <ListItemButton component={Link} to="/score">
+              </ListItemButton>
+              <ListItemButton component={Link} to="/score">
                 <ListItemText>{t("score")}</ListItemText>
-            </ListItemButton>
-            <ListItemButton component={Link} to="/logout">
+              </ListItemButton>
+              <ListItemButton component={Link} to="/logout">
                 <ListItemText>{t("logout")}</ListItemText>
-            </ListItemButton>
+              </ListItemButton>
             </List>
-                :
+            :
             <List>
               <ListItemButton component={Link} to="/login">
-                  <ListItemText>{t("login")}</ListItemText>
+                <ListItemText>{t("login")}</ListItemText>
               </ListItemButton>
-              <ListItemButton component={Link} to="/quiz">
-                  <ListItemText>{t("register")}</ListItemText>
+              <ListItemButton component={Link} to="/register">
+                <ListItemText>{t("register")}</ListItemText>
               </ListItemButton>
             </List>
           }
-      </Drawer>
-      <IconButton
-        sx={{ color: "white"}}
-        onClick={() => setOpenDrawer(!openDrawer)}
-      >
-        <MenuIcon />
-      </IconButton>
+        </Drawer>
+        <IconButton
+          sx={{ color: "white" }}
+          onClick={() => setOpenDrawer(!openDrawer)}
+        >
+          <MenuIcon />
+        </IconButton>
       </div>
     </React.Fragment>
   );
