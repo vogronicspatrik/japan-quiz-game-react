@@ -24,7 +24,7 @@ const DrawerComp = () => {
 
   useEffect(() => {
     if (lng && lng.length > 2) {
-      i18next.changeLanguage("en");
+      i18next.changeLanguage("hu");
     }
   }, []);
   const handleClick = (event: any) => {

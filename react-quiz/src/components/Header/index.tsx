@@ -27,7 +27,7 @@ const Header = () => {
     const lng = localStorage.getItem("i18nextLng");
     useEffect(() => {
         if (lng && lng.length> 2) {
-        i18next.changeLanguage("en");
+        i18next.changeLanguage("hu");
         }
     }, []);
 
