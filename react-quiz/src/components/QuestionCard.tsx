@@ -1,5 +1,5 @@
-import React from 'react';
 import { Button, Card, CardContent, Typography } from '@mui/material';
+import React,{useEffect, useState} from 'react';
 import { AnswerObject } from '../Quiz';
 
 type Props = {
@@ -11,6 +11,8 @@ type Props = {
   totalQuestion: number;
 };
 
+
+
 const QuestionCard: React.FC<Props> = ({
   question,
   answers,
@@ -19,6 +21,46 @@ const QuestionCard: React.FC<Props> = ({
   questionNr,
   totalQuestion,
 }) => {
+
+  // const [timeRemaining, setTimeRemaining] = useState(10);
+  // const [questionOver, setQuestionOver] = useState(false);
+  // const [count, setCount] = useState(10);
+
+  //   useEffect(() => {
+  //     if (count === 0) {
+  //       // callback(null as React.MouseEvent<HTMLButtonElement, MouseEvent>);
+  //       return;
+  //     }
+
+  //     const timer = setInterval(() => {
+  //       setCount(count - 1);
+  //     }, 1000);
+
+  //     return () => clearInterval(timer);
+  //   }, [count]);
+
+    // useEffect(() => {
+    //   if (!questionOver) {
+    //     const timer = setInterval(() => {
+    //       setTimeRemaining(prevTime => {
+    //         const newTime = prevTime - 1;
+    //         console.log(questionOver);
+    //         console.log(timeRemaining);
+    //         if (newTime === 0) {
+    //           clearInterval(timer);
+    //           setQuestionOver(true);
+    //         }
+    //         return newTime;
+    //       });
+    //     }, 1000);
+
+    //     return () => clearInterval(timer);
+    //   }
+    // }, [questionOver]);
+
+
+
+
   return (
     <Card>
       <CardContent>

@@ -1,19 +1,29 @@
-import React, {useState} from 'react';
-import { fetchQuizQuestions } from './SampleData';
+import React, { useEffect, useState } from 'react';
 // Components
 import QuestionCard from './components/QuestionCard';
 import { QuestionState } from './SampleData';
 //styles
 
 
+import { Button, Container, createTheme, MenuItem, Select, ThemeProvider, Typography } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import BGImage from './gorin.jpg';
 import QuestionService from './services/question-service';
 import UserService from './services/user-service';
-import { makeStyles } from '@mui/styles';
-import { Typography, Button, createTheme, ThemeProvider, Container, MenuItem, Select } from '@mui/material';
-import BGImage from './gorin.jpg';
 
 
 const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#695104",
+    },
+    secondary: {
+      main: "#695104",
+    },
+    background:{
+      default:'#695104'
+    }
+  },
   spacing: 8,
   typography: {
     fontFamily: 'Shojumaru',
@@ -54,10 +64,11 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     cursor: 'pointer',
-    background: 'linear-gradient(180deg, #fff, #ffcc91)',
+    //background: 'black',
     border: '2px solid #d38558',
     boxShadow: '0px 5px 10px rgba(0, 0, 0, 0.25)',
     height: 40,
+    color:"secondary",
     // margin: theme.spacing(2, 0),
     // padding: theme.spacing(0, 4),
     maxWidth: 200,
@@ -92,6 +103,23 @@ const QuizPage = () => {
   const userService = new UserService();
   const classes = useStyles();
 
+  const [count, setCount] = useState(10);
+
+  useEffect(() => {
+    if (count === 0) {
+      console.log("lol")
+      checkAnswer();
+      return;
+    }
+
+    const timer = setInterval(() => {
+      setCount(count - 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [count]);
+
+
   const startQuiz = async () =>{
       setLoading(true);
       setGameOver(false);
@@ -107,15 +135,24 @@ const QuizPage = () => {
       setLoading(false);
   }
 
-  const checkAnswer = (e: React.MouseEvent<HTMLButtonElement>) =>{
+  const checkAnswer = (e?: React.MouseEvent<HTMLButtonElement>) =>{
 
-    if(!gameOver){
+    if(!gameOver && e != null){
       //Users answer
-      const answer = e.currentTarget.value;
+      let answer = "";
+      if(e != null){
+        answer = e.currentTarget.value;
+      }else{
+        answer = questions[number].correct_answer;
+      }
       //check answer against correct value
       const correct = questions[number].correct_answer === answer;
-      // Add score if anwsertr is correct
+
+      if(e != null){
+      // Add score if anwsertr is correct, we get point if we dont run out of time
       if(correct) setScore(prev => prev+1);
+      }
+
       //save answer in the array
       const answerObject = {
         question: questions[number].question,
@@ -131,26 +168,35 @@ const QuizPage = () => {
 
   }
 
+  const calculatePoints = () => {
+    let newPoints = score;
+    if(difficulty === "medium"){
+      newPoints = newPoints*1.2;
+    }
+    else if(difficulty === "hard"){
+      newPoints = newPoints*1.5;
+    }
+    return newPoints;
+  } 
+
   const nextQuestion = () => {
     //move on to the next if not the last one
     const nextQuestion = number + 1;
-    console.log(nextQuestion+ "?=" +  TOTAL_QUESTION)
 
     if(nextQuestion === TOTAL_QUESTION){
       //console.log(score);
-      userService.setPointsAndDailyQuizDone(score);
-      console.log("game vege? :" + gameOver)
+      userService.setPointsAndDailyQuizDone(calculatePoints());
       setGameOver(true);
     }
     else{
       setNumber(nextQuestion);
+      setCount(10);
     }
   }
 
   const handleDiffChange = (e: any) => {
     setDifficulty(e.target.value);
 };
-
 
   return (
     <ThemeProvider theme={theme}>
@@ -160,19 +206,19 @@ const QuizPage = () => {
     </Typography>
     {/* || userAnswers.length === TOTAL_QUESTION */}
     {gameOver ? (
-      <Container sx={{display:"flex",flexDirection:"column", maxWidth:"200px", textAlign:"center", width:"300px"}}>
+      <Container sx={{display:"flex",flexDirection:"column", textAlign:"center", width:"300px"}}>
         <Select
           labelId="diff-select-label"
           id="diff-select"
           value={difficulty}
           onChange={handleDiffChange}
-          sx={{ backgroundColor: "#333", color: "#fff", marginRight: 2, width:"200px" }}
+          sx={{ backgroundColor: "#695104", color: "white", marginRight: 2, width:"200px" }}
           >
           <MenuItem value="easy">Könnyű</MenuItem>
           <MenuItem value="medium">Közepes</MenuItem>
           <MenuItem value="hard">Nehéz</MenuItem>
         </Select>
-        <Button variant="contained" color="primary" className={classes.button} onClick={startQuiz}>
+        <Button variant="contained" className={classes.button} onClick={startQuiz}>
           Start
         </Button>
       </Container>
@@ -183,23 +229,28 @@ const QuizPage = () => {
     {loading && <Typography>Loading Questions ...</Typography>}
 
     {!loading && !gameOver && (
-      <QuestionCard
-        questionNr={number + 1}
-        totalQuestion={TOTAL_QUESTION}
-        question={questions[number].question}
-        answers={questions[number].answers}
-        userAnswer={userAnswers ? userAnswers[number] : undefined}
-        callback={checkAnswer}
-      />
+      <div>
+        <Typography variant="h5">
+            Time remaining: {count}s
+        </Typography>
+        <QuestionCard
+          questionNr={number + 1}
+          totalQuestion={TOTAL_QUESTION}
+          question={questions[number].question}
+          answers={questions[number].answers}
+          userAnswer={userAnswers ? userAnswers[number] : undefined}
+          callback={checkAnswer}
+        />
+      </div>
     )}
 
     {!gameOver && !loading && userAnswers.length === number + 1 && number !== TOTAL_QUESTION && !isLastQ? (
-      <Button variant="contained" color="primary" className={classes.button} onClick={nextQuestion}>
+      <Button variant="contained" className={classes.button} onClick={nextQuestion}>
         Next Question
       </Button>
     ) : null}
         {!gameOver && !loading && userAnswers.length === number + 1 && number !== TOTAL_QUESTION && isLastQ ? (
-      <Button variant="contained" color="primary" className={classes.button} onClick={nextQuestion}>
+      <Button variant="contained" className={classes.button} onClick={nextQuestion}>
         End Quiz
       </Button>
     ) : null}
